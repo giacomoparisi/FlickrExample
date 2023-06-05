@@ -1,19 +1,17 @@
 plugins {
-    alias libs.plugins.android.application
+    alias libs.plugins.android.library
 }
 
 android {
-    namespace 'com.giacomoparisi.flickrexample'
+    namespace 'com.giacomoparisi.domain'
     compileSdk libs.versions.compiledSdk.get().toInteger()
 
     defaultConfig {
-        applicationId "com.giacomoparisi.flickrexample"
         minSdk libs.versions.minSdk.get().toInteger()
         targetSdk libs.versions.targetSdk.get().toInteger()
-        versionCode libs.versions.versionCode.get().toInteger()
-        versionName libs.versions.versionName.get()
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -31,12 +29,5 @@ android {
 dependencies {
 
     implementation(project(":entities"))
-    implementation(project(":domain"))
-    implementation(project(":data"))
-    implementation(project(":home"))
-
-    implementation libs.androidx.appcompat
-    implementation libs.google.material
-    implementation libs.androidx.constraintlayout
 
 }
