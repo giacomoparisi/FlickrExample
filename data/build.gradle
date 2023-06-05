@@ -31,4 +31,13 @@ dependencies {
     implementation(project(":entities"))
     implementation(project(":domain"))
 
+    /* --- retrofit --- */
+    implementation libs.retrofit2.retrofit
+    implementation libs.retrofit2.gson
+    implementation libs.retrofit2.rxjava3
+
+    /* --- rx java --- */
+    implementation libs.rxjava3.rxjava
+    implementation libs.rxjava3.rxandroid
+
 }

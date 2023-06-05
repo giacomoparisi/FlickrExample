@@ -17,10 +17,32 @@ appCompat = "1.6.1"
 # GOOGLE
 material = "1.9.0"
 
+# SQUARE UP
+retrofit = "2.9.0"
+loggingInterceptor = "4.11.0"
+
+# REACTIVEX
+rxJava3 = "3.1.6"
+rxJava3Android = "3.0.2"
+
 [libraries]
+
+# ANDROIDX
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintLayout" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appCompat" }
+
+# GOOGLE
 google-material = { module = "com.google.android.material:material", version.ref = "material" }
+
+# SQUARE UP
+retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit2-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+retrofit2-rxjava3 = { module = "com.squareup.retrofit2:adapter-rxjava3", version.ref = "retrofit" }
+logginginterceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "loggingInterceptor" }
+
+# REACTIVEX
+rxjava3-rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxJava3" }
+rxjava3-rxandroid = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxJava3Android" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
