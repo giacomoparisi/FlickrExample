@@ -12,7 +12,7 @@ public class PhotoResponse {
     @SerializedName("server")
     public String server;
 
-    Photo toPhoto() {
+    public Photo toPhoto() {
 
         if (id != null && secret != null && server != null)
             return new Photo(

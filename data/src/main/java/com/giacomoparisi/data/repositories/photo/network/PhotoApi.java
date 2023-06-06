@@ -12,8 +12,8 @@ public interface PhotoApi {
     Single<PhotosResponse> searchPhotos(
             @Query("api_key") String apiKey,
             @Query("text") String text,
-            @Query("page") String page,
-            @Query("per_page") String perPage
+            @Query("page") Integer page,
+            @Query("per_page") Integer perPage
     );
 
 }
