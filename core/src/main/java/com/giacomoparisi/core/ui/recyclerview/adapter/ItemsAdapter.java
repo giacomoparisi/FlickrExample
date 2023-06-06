@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 
 import com.giacomoparisi.core.ui.recyclerview.item.Item;
+import com.giacomoparisi.core.ui.recyclerview.pagination.NextPageListener;
 import com.giacomoparisi.core.ui.recyclerview.viewholder.ItemViewHolder;
 import com.giacomoparisi.core.ui.recyclerview.viewholder.ItemViewHolderFactory;
 
@@ -17,6 +18,7 @@ import java.util.List;
 public class ItemsAdapter extends ListAdapter<Item, ItemViewHolder> implements IAdapter {
 
     private final List<ItemViewHolderFactory> factories;
+    private NextPageListener nextPageListener;
 
     public ItemsAdapter(ItemViewHolderFactory... factories) {
         super(
@@ -67,7 +69,7 @@ public class ItemsAdapter extends ListAdapter<Item, ItemViewHolder> implements I
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
 
-        // handlePaging(position)
+        handleNextPage(position);
         Item item = getItem(position);
         holder.setItem(item);
         holder.bind(item, position);
@@ -79,7 +81,7 @@ public class ItemsAdapter extends ListAdapter<Item, ItemViewHolder> implements I
             int position,
             @NonNull List<Object> payloads
     ) {
-        // handlePaging(position)
+        handleNextPage(position);
         Item item = getItem(position);
         holder.setItem(item);
         holder.bind(item, position);
@@ -92,6 +94,18 @@ public class ItemsAdapter extends ListAdapter<Item, ItemViewHolder> implements I
             items.add(getItem(i));
         }
         return items;
+    }
+
+    /* --- pagination --- */
+
+    public void setNextPageListener(NextPageListener nextPageListener) {
+        this.nextPageListener = nextPageListener;
+    }
+
+    private void handleNextPage(int position) {
+        if (nextPageListener != null && position == getItems().size() - 1) {
+            nextPageListener.nextPage();
+        }
     }
 
 }

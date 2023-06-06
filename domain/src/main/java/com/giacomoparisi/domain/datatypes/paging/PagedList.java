@@ -27,6 +27,14 @@ public class PagedList<T> {
         return isCompleted;
     }
 
+    public <P> PagedList<P> map(Mapper<T, P> mapper) {
+        List<P> mappedList = new ArrayList<>();
+        for (int i = 0; i < data.size(); i++) {
+            mappedList.add(mapper.map(data.get(i)));
+        }
+        return new PagedList<>(mappedList, page, isCompleted);
+    }
+
     public PagedList<T> addPage(PagedList<T> other) {
         List<T> newData = new ArrayList<>();
         newData.addAll(data);

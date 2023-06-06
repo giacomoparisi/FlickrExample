@@ -5,19 +5,19 @@ import androidx.lifecycle.ViewModel;
 import com.giacomoparisi.data.error.ErrorMapper;
 import com.giacomoparisi.domain.datatypes.lazydata.LazyDataError;
 import com.giacomoparisi.domain.datatypes.lazydata.LazyDataSuccess;
+import com.giacomoparisi.domain.datatypes.paging.PagedList;
 import com.giacomoparisi.domain.usecases.photo.SearchPhotosUseCase;
 import com.giacomoparisi.home.data.actions.HomeAction;
+import com.giacomoparisi.home.data.actions.NextPhotosPageAction;
 import com.giacomoparisi.home.data.actions.SearchPhotosAction;
 import com.giacomoparisi.home.ui.PhotoItem;
-
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.reactivex.rxjava3.subjects.BehaviorSubject;
@@ -31,8 +31,14 @@ public class HomeViewModel extends ViewModel {
 
     public Observable<HomeState> state = stateBehaviorSubject;
 
-    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private HomeState state() {
+        return stateBehaviorSubject.getValue();
+    }
 
+    /* --- pagination --- */
+    private final int pageSize = 20;
+    private Disposable firstPageDisposable;
+    private Disposable nextPageDisposable;
 
     /* --- use cases --- */
     private final SearchPhotosUseCase searchPhotosUseCase;
@@ -46,22 +52,19 @@ public class HomeViewModel extends ViewModel {
         this.errorMapper = errorMapper;
     }
 
-    private void searchPhotos(String text) {
-        Disposable disposable =
-                searchPhotosUseCase.execute(text, 0, 10)
+    /* --- search --- */
+
+    private void searchFirstPage(String text) {
+        if (firstPageDisposable != null) firstPageDisposable.dispose();
+        if (nextPageDisposable != null) nextPageDisposable.dispose();
+        firstPageDisposable =
+                searchPhotos(text, 0)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .map(
-                                photos ->
-                                        photos.getData()
-                                                .stream()
-                                                .map(PhotoItem::new)
-                                                .collect(Collectors.toList())
-                        )
                         .subscribe(
                                 photos -> {
                                     HomeState newState =
-                                            new HomeState(new LazyDataSuccess<>(photos));
+                                            new HomeState(new LazyDataSuccess<>(photos), text);
                                     stateBehaviorSubject.onNext(newState);
                                 },
                                 throwable -> {
@@ -70,26 +73,72 @@ public class HomeViewModel extends ViewModel {
                                                     new LazyDataError<>(
                                                             errorMapper.map(throwable),
                                                             stateBehaviorSubject.getValue().getPhotos().value()
-                                                    )
+                                                    ),
+                                                    text
                                             );
                                     stateBehaviorSubject.onNext(newState);
                                 }
                         );
+    }
 
-        compositeDisposable.add(disposable);
+    private boolean needNextPage() {
+        // Avoid to search a new page if a request is already running
+        PagedList<PhotoItem> currentList = stateBehaviorSubject.getValue().getPhotos().value();
+        boolean isNextPageIdle = nextPageDisposable == null || !nextPageDisposable.isDisposed();
+        return isNextPageIdle && currentList != null && !currentList.getIsCompleted();
+    }
 
+    private void searchNextPage() {
+
+        PagedList<PhotoItem> currentList = stateBehaviorSubject.getValue().getPhotos().value();
+
+        if (needNextPage()) {
+            firstPageDisposable =
+                    searchPhotos(state().getText(), currentList.getPage() + 1)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(
+                                    photos -> {
+                                        HomeState newState =
+                                                new HomeState(
+                                                        new LazyDataSuccess<>(currentList.addPage(photos)),
+                                                        state().getText()
+                                                );
+                                        stateBehaviorSubject.onNext(newState);
+                                    },
+                                    throwable -> {
+                                        HomeState newState =
+                                                new HomeState(
+                                                        new LazyDataError<>(
+                                                                errorMapper.map(throwable),
+                                                                stateBehaviorSubject.getValue().getPhotos().value()
+                                                        ),
+                                                        state().getText()
+                                                );
+                                        stateBehaviorSubject.onNext(newState);
+                                    }
+                            );
+        }
+    }
+
+    private Single<PagedList<PhotoItem>> searchPhotos(String text, int page) {
+        return searchPhotosUseCase
+                .execute(text, page, pageSize)
+                .map(photos -> photos.map(PhotoItem::new));
     }
 
     /* --- actions --- */
 
     public void dispatch(HomeAction action) {
         if (action instanceof SearchPhotosAction)
-            searchPhotos(((SearchPhotosAction) action).getText());
+            searchFirstPage(((SearchPhotosAction) action).getText());
+        else if (action instanceof NextPhotosPageAction)
+            searchNextPage();
     }
 
     @Override
     protected void onCleared() {
-        compositeDisposable.clear();
+        if (firstPageDisposable != null) firstPageDisposable.dispose();
         super.onCleared();
     }
 }

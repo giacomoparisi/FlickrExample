@@ -1,6 +1,7 @@
 package com.giacomoparisi.home.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.giacomoparisi.core.ui.recyclerview.adapter.ItemsAdapter;
 import com.giacomoparisi.core.ui.recyclerview.decoration.AdaptiveSpacingItemDecoration;
 import com.giacomoparisi.core.ui.recyclerview.item.Item;
 import com.giacomoparisi.core.ui.recyclerview.layoutmanagers.NpaGridLayoutManager;
+import com.giacomoparisi.domain.datatypes.paging.PagedList;
 import com.giacomoparisi.home.R;
 import com.giacomoparisi.home.data.HomeState;
 import com.giacomoparisi.home.data.HomeViewModel;
@@ -88,13 +90,14 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new AdaptiveSpacingItemDecoration(50, true));
         recyclerView.setAdapter(adapter);
+        adapter.setNextPageListener(() -> viewModel.dispatch(HomeAction.nextPhotosPage()));
     }
 
     private void updateView(HomeState state) {
 
-        List<PhotoItem> photos = state.getPhotos().value();
-        if (photos != null) {
-            List<Item> items = new ArrayList<>(photos);
+        PagedList<PhotoItem> photos = state.getPhotos().value();
+        if (photos != null && photos.getData() != null) {
+            List<Item> items = new ArrayList<>(photos.getData());
             adapter.submitList(items);
             adapter.notifyDataSetChanged();
         }
