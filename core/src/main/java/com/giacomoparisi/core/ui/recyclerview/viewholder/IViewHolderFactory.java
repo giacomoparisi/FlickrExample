@@ -1,8 +1,6 @@
-package com.giacomoparisi.core.ui.racyclerview.viewholder;
+package com.giacomoparisi.core.ui.recyclerview.viewholder;
 
 import android.view.ViewGroup;
-
-import com.giacomoparisi.core.ui.racyclerview.item.Item;
 
 public interface IViewHolderFactory {
 

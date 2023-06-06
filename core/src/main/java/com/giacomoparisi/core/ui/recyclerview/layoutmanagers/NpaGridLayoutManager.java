@@ -1,4 +1,4 @@
-package com.giacomoparisi.core.ui.racyclerview.layoutmanagers;
+package com.giacomoparisi.core.ui.recyclerview.layoutmanagers;
 
 import android.content.Context;
 import android.util.AttributeSet;

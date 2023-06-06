@@ -1,4 +1,4 @@
-package com.giacomoparisi.core.ui.racyclerview.viewholder;
+package com.giacomoparisi.core.ui.recyclerview.viewholder;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,10 +8,9 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.giacomoparisi.core.ui.racyclerview.adapter.IAdapter;
-import com.giacomoparisi.core.ui.racyclerview.item.Item;
+import com.giacomoparisi.core.ui.recyclerview.adapter.IAdapter;
+import com.giacomoparisi.core.ui.recyclerview.item.Item;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ItemViewHolder extends RecyclerView.ViewHolder {

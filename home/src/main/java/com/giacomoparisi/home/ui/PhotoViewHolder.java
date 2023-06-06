@@ -4,9 +4,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.giacomoparisi.core.ui.racyclerview.item.Item;
-import com.giacomoparisi.core.ui.racyclerview.viewholder.ItemViewHolder;
-import com.giacomoparisi.core.ui.racyclerview.viewholder.ItemViewHolderFactory;
+import com.giacomoparisi.core.ui.recyclerview.item.Item;
+import com.giacomoparisi.core.ui.recyclerview.viewholder.ItemViewHolder;
+import com.giacomoparisi.core.ui.recyclerview.viewholder.ItemViewHolderFactory;
 import com.giacomoparisi.core.utils.CastUtils;
 import com.giacomoparisi.home.R;
 

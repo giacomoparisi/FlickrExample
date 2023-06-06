@@ -1,4 +1,4 @@
-package com.giacomoparisi.core.ui.racyclerview.adapter;
+package com.giacomoparisi.core.ui.recyclerview.adapter;
 
 import android.view.ViewGroup;
 
@@ -6,9 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 
-import com.giacomoparisi.core.ui.racyclerview.item.Item;
-import com.giacomoparisi.core.ui.racyclerview.viewholder.ItemViewHolder;
-import com.giacomoparisi.core.ui.racyclerview.viewholder.ItemViewHolderFactory;
+import com.giacomoparisi.core.ui.recyclerview.item.Item;
+import com.giacomoparisi.core.ui.recyclerview.viewholder.ItemViewHolder;
+import com.giacomoparisi.core.ui.recyclerview.viewholder.ItemViewHolderFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;

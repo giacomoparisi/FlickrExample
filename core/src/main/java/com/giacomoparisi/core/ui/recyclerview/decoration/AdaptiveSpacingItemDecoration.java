@@ -1,4 +1,4 @@
-package com.giacomoparisi.core.ui.racyclerview.decoration;
+package com.giacomoparisi.core.ui.recyclerview.decoration;
 
 import android.graphics.Rect;
 import android.view.View;

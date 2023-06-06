@@ -9,13 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.giacomoparisi.core.ui.racyclerview.adapter.ItemsAdapter;
-import com.giacomoparisi.core.ui.racyclerview.decoration.AdaptiveSpacingItemDecoration;
-import com.giacomoparisi.core.ui.racyclerview.item.Item;
-import com.giacomoparisi.core.ui.racyclerview.layoutmanagers.NpaGridLayoutManager;
+import com.giacomoparisi.core.ui.recyclerview.adapter.ItemsAdapter;
+import com.giacomoparisi.core.ui.recyclerview.decoration.AdaptiveSpacingItemDecoration;
+import com.giacomoparisi.core.ui.recyclerview.item.Item;
+import com.giacomoparisi.core.ui.recyclerview.layoutmanagers.NpaGridLayoutManager;
 import com.giacomoparisi.home.R;
 import com.giacomoparisi.home.data.HomeState;
 import com.giacomoparisi.home.data.HomeViewModel;

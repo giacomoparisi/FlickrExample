@@ -1,4 +1,4 @@
-package com.giacomoparisi.core.ui.racyclerview.item;
+package com.giacomoparisi.core.ui.recyclerview.item;
 
 public abstract class Item {
 

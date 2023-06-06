@@ -53,7 +53,8 @@ public class HomeViewModel extends ViewModel {
                         .observeOn(AndroidSchedulers.mainThread())
                         .map(
                                 photos ->
-                                        photos.stream()
+                                        photos.getData()
+                                                .stream()
                                                 .map(PhotoItem::new)
                                                 .collect(Collectors.toList())
                         )

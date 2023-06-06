@@ -1,5 +1,6 @@
 package com.giacomoparisi.domain.usecases.photo;
 
+import com.giacomoparisi.domain.datatypes.paging.PagedList;
 import com.giacomoparisi.entities.photo.Photo;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class SearchPhotosUseCase {
         this.repository = repository;
     }
 
-    public Single<List<Photo>> execute(String text, Integer page, Integer pageSize) {
+    public Single<PagedList<Photo>> execute(String text, Integer page, Integer pageSize) {
         return repository.searchPhotos(text, page, pageSize);
     }
 

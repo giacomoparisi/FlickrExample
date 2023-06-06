@@ -1,6 +1,4 @@
-package com.giacomoparisi.core.ui.racyclerview.viewholder;
-
-import com.giacomoparisi.core.ui.racyclerview.item.Item;
+package com.giacomoparisi.core.ui.recyclerview.viewholder;
 
 public class ItemViewHolderFactory {
 

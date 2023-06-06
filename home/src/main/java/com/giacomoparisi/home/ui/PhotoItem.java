@@ -1,10 +1,7 @@
 package com.giacomoparisi.home.ui;
 
-import com.giacomoparisi.core.ui.racyclerview.item.Item;
+import com.giacomoparisi.core.ui.recyclerview.item.Item;
 import com.giacomoparisi.entities.photo.Photo;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PhotoItem extends Item {
 
