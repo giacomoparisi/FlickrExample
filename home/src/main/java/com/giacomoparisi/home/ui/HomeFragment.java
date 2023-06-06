@@ -1,10 +1,12 @@
 package com.giacomoparisi.home.ui;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,6 +39,7 @@ public class HomeFragment extends Fragment {
             new CompositeDisposable();
     private HomeViewModel viewModel;
     private RecyclerView recyclerView;
+    private EditText editText;
     private final ItemsAdapter adapter = new ItemsAdapter(PhotoViewHolder.factory());
 
     @Override
@@ -62,6 +65,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.recycler_view);
+        editText = view.findViewById(R.id.search);
         setupRecyclerView();
 
         compositeDisposable.add(
@@ -91,6 +95,9 @@ public class HomeFragment extends Fragment {
         recyclerView.addItemDecoration(new AdaptiveSpacingItemDecoration(50, true));
         recyclerView.setAdapter(adapter);
         adapter.setNextPageListener(() -> viewModel.dispatch(HomeAction.nextPhotosPage()));
+    }
+
+    private void setupSearch() {
     }
 
     private void updateView(HomeState state) {
