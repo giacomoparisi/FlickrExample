@@ -8,6 +8,9 @@ import com.giacomoparisi.domain.datatypes.lazydata.LazyDataSuccess;
 import com.giacomoparisi.domain.usecases.photo.SearchPhotosUseCase;
 import com.giacomoparisi.home.data.actions.HomeAction;
 import com.giacomoparisi.home.data.actions.SearchPhotosAction;
+import com.giacomoparisi.home.ui.PhotoItem;
+
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -48,6 +51,12 @@ public class HomeViewModel extends ViewModel {
                 searchPhotosUseCase.execute(text, 0, 10)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
+                        .map(
+                                photos ->
+                                        photos.stream()
+                                                .map(PhotoItem::new)
+                                                .collect(Collectors.toList())
+                        )
                         .subscribe(
                                 photos -> {
                                     HomeState newState =

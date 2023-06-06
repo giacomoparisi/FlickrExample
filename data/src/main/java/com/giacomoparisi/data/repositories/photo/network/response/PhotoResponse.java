@@ -23,7 +23,7 @@ public class PhotoResponse {
                             id +
                             "_" +
                             secret +
-                            "w.jpg"
+                            "_w.jpg"
             );
         else return null;
 
