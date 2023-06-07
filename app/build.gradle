@@ -33,22 +33,34 @@ dependencies {
 
     implementation(project(":entities"))
     implementation(project(":domain"))
+    implementation(project(":navigation"))
     implementation(project(":data"))
+    implementation(project(":core"))
     implementation(project(":home"))
+    implementation(project(":detail"))
 
     // Added kotlin dependency to avoid a duplicated class error
     // in the android studio Flamingo version
     // https://gist.github.com/danielcshn/7aa57155d766d46c043fde015f054d40
     implementation(platform(libs.kotlin.bom))
 
+    /* --- ui --- */
     implementation libs.androidx.appcompat
     implementation libs.androidx.constraintlayout
+
+    /* --- navigation --- */
     implementation libs.androidx.navigation.fragment
     implementation libs.androidx.navigation.ui
 
+    /* --- theme --- */
     implementation libs.google.material
 
+    /* --- hilt --- */
     implementation libs.hilt.android
     annotationProcessor libs.hilt.compiler
+
+    /* --- rx java --- */
+    implementation libs.rxjava3.rxjava
+    implementation libs.rxjava3.rxandroid
 
 }

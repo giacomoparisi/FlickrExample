@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'com.giacomoparisi.home'
+    namespace 'com.giacomoparisi.detail'
     compileSdk libs.versions.compiledSdk.get().toInteger()
 
     defaultConfig {
@@ -33,17 +33,12 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
     implementation(project(":core"))
-    implementation(project(":navigation"))
 
-    /* --- ui --- */
+    /* --- androidx --- */
     implementation libs.androidx.viewmodel
     implementation libs.androidx.recyclerview
     implementation libs.androidx.cardview
     implementation libs.androidx.constraintlayout
-
-    /* --- navigation --- */
-    implementation libs.androidx.navigation.fragment
-    implementation libs.androidx.navigation.ui
 
     /* --- rx java --- */
     implementation libs.rxjava3.rxjava

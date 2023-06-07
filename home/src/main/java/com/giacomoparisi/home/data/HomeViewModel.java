@@ -21,6 +21,8 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.reactivex.rxjava3.subjects.BehaviorSubject;
+import it.umbriajazz.navigation.NavigationDestination;
+import it.umbriajazz.navigation.NavigationManager;
 
 @HiltViewModel
 public class HomeViewModel extends ViewModel {
@@ -46,10 +48,18 @@ public class HomeViewModel extends ViewModel {
     /* --- error --- */
     private final ErrorMapper errorMapper;
 
+    /* --- navigation --- */
+    private final NavigationManager navigationManager;
+
     @Inject
-    public HomeViewModel(SearchPhotosUseCase searchPhotosUseCase, ErrorMapper errorMapper) {
+    public HomeViewModel(
+            SearchPhotosUseCase searchPhotosUseCase,
+            ErrorMapper errorMapper,
+            NavigationManager navigationManager
+    ) {
         this.searchPhotosUseCase = searchPhotosUseCase;
         this.errorMapper = errorMapper;
+        this.navigationManager = navigationManager;
     }
 
     /* --- search --- */
@@ -93,7 +103,7 @@ public class HomeViewModel extends ViewModel {
         PagedList<PhotoItem> currentList = stateBehaviorSubject.getValue().getPhotos().value();
 
         if (needNextPage()) {
-            firstPageDisposable =
+            nextPageDisposable =
                     searchPhotos(state().getText(), currentList.getPage() + 1)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -124,7 +134,18 @@ public class HomeViewModel extends ViewModel {
     private Single<PagedList<PhotoItem>> searchPhotos(String text, int page) {
         return searchPhotosUseCase
                 .execute(text, page, pageSize)
-                .map(photos -> photos.map(PhotoItem::new));
+                .map(photos ->
+                        photos.map(photo ->
+                                new PhotoItem(
+                                        photo,
+                                        v -> {
+                                            String url = photo.getUrl();
+                                            navigationManager.navigate(
+                                                    NavigationDestination.detail(url)
+                                            );
+                                        }
+                                ))
+                );
     }
 
     /* --- actions --- */

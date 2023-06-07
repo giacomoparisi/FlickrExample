@@ -22,10 +22,14 @@ public class PhotoViewHolder extends ItemViewHolder {
     @Override
     public void bind(Item item, Integer position) {
         PhotoItem photo = CastUtils.safeCast(item);
-        if (photo != null)
+        if (photo != null) {
+
             Glide.with(itemView.getContext())
                     .load(photo.getPhoto().getUrl())
                     .into(imageView);
+
+            itemView.setOnClickListener(photo.getOnClickListener());
+        }
     }
 
     public static ItemViewHolderFactory factory() {

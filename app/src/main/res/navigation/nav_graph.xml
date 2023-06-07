@@ -7,6 +7,29 @@
     <fragment
         android:id="@+id/home"
         android:name="com.giacomoparisi.home.ui.HomeFragment"
-        android:label="HomeFragment" />
+        android:label="HomeFragment" >
+
+        <action
+            android:id="@+id/action_home_to_detail"
+            app:destination="@id/detail">
+
+            <argument
+                android:name="url"
+                app:argType="string" />
+
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/detail"
+        android:name="com.giacomoparisi.detail.ui.DetailFragment"
+        android:label="Detail" >
+
+        <argument
+            android:name="url"
+            app:argType="string" />
+
+    </fragment>
 
 </navigation>
