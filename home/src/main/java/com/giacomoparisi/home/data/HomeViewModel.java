@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.giacomoparisi.data.error.ErrorMapper;
 import com.giacomoparisi.domain.datatypes.lazydata.LazyDataError;
+import com.giacomoparisi.domain.datatypes.lazydata.LazyDataLoading;
 import com.giacomoparisi.domain.datatypes.lazydata.LazyDataSuccess;
 import com.giacomoparisi.domain.datatypes.paging.PagedList;
 import com.giacomoparisi.domain.usecases.photo.SearchPhotosUseCase;
@@ -67,6 +68,9 @@ public class HomeViewModel extends ViewModel {
     private void searchFirstPage(String text) {
         if (firstPageDisposable != null) firstPageDisposable.dispose();
         if (nextPageDisposable != null) nextPageDisposable.dispose();
+
+        stateBehaviorSubject.onNext(state().copy(new LazyDataLoading<>()));
+
         firstPageDisposable =
                 searchPhotos(text, 1)
                         .subscribeOn(Schedulers.io())
@@ -76,20 +80,20 @@ public class HomeViewModel extends ViewModel {
                         })
                         .subscribe(
                                 photos -> {
-                                    HomeState newState =
-                                            new HomeState(new LazyDataSuccess<>(photos), text);
-                                    stateBehaviorSubject.onNext(newState);
+                                    stateBehaviorSubject.onNext(
+                                            state().copy(text)
+                                                    .copy(new LazyDataSuccess<>(photos))
+                                    );
                                 },
                                 throwable -> {
-                                    HomeState newState =
-                                            new HomeState(
+                                    stateBehaviorSubject.onNext(
+                                            state().copy(
                                                     new LazyDataError<>(
                                                             errorMapper.map(throwable),
                                                             stateBehaviorSubject.getValue().getPhotos().value()
-                                                    ),
-                                                    text
-                                            );
-                                    stateBehaviorSubject.onNext(newState);
+                                                    )
+                                            )
+                                    );
                                 }
                         );
     }
@@ -166,7 +170,7 @@ public class HomeViewModel extends ViewModel {
     @Override
     protected void onCleared() {
         if (firstPageDisposable != null) firstPageDisposable.dispose();
-        if(nextPageDisposable != null) nextPageDisposable.dispose();
+        if (nextPageDisposable != null) nextPageDisposable.dispose();
         firstPageDisposable = null;
         nextPageDisposable = null;
         super.onCleared();

@@ -10,6 +10,10 @@ public class LazyDataLoading<T> implements LazyData<T> {
         this.value = value;
     }
 
+    public LazyDataLoading() {
+        value = null;
+    }
+
     @Override
     public T successValue() {
         return null;
@@ -23,5 +27,10 @@ public class LazyDataLoading<T> implements LazyData<T> {
     @Override
     public FlickerExampleException error() {
         return null;
+    }
+
+    @Override
+    public boolean isLoading() {
+        return true;
     }
 }

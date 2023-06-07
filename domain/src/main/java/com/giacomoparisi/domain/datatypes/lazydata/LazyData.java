@@ -10,5 +10,7 @@ public interface LazyData<T> {
 
    FlickerExampleException error();
 
+    boolean isLoading();
+
 }
 

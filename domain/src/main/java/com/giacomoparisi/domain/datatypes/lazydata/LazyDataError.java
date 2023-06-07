@@ -26,4 +26,9 @@ public class LazyDataError<T> implements LazyData<T> {
     public FlickerExampleException error() {
         return error;
     }
+
+    @Override
+    public boolean isLoading() {
+        return false;
+    }
 }

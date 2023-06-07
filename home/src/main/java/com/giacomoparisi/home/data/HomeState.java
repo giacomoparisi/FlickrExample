@@ -31,4 +31,12 @@ public class HomeState {
         return text;
     }
 
+    public HomeState copy(String textUpdate) {
+        return new HomeState(photos, textUpdate);
+    }
+
+    public HomeState copy(LazyData<PagedList<PhotoItem>> photosUpdate) {
+        return new HomeState(photosUpdate, text);
+    }
+
 }

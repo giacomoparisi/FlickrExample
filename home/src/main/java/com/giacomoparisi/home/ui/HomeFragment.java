@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,7 +32,6 @@ import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -42,6 +42,7 @@ public class HomeFragment extends Fragment {
     private HomeViewModel viewModel;
     private RecyclerView recyclerView;
     private EditText editText;
+    private ProgressBar loading;
     private final ItemsAdapter adapter = new ItemsAdapter(PhotoViewHolder.factory());
 
     @Override
@@ -69,6 +70,7 @@ public class HomeFragment extends Fragment {
 
         // find views
         recyclerView = view.findViewById(R.id.recycler_view);
+        loading = view.findViewById(R.id.loading);
         editText = view.findViewById(R.id.search);
 
         // setup
@@ -127,6 +129,12 @@ public class HomeFragment extends Fragment {
             // TODO: optimize list refresh
             adapter.notifyDataSetChanged();
         }
+
+        loading.setVisibility(
+                state.getPhotos().isLoading() ?
+                        View.VISIBLE :
+                        View.GONE
+        );
 
     }
 

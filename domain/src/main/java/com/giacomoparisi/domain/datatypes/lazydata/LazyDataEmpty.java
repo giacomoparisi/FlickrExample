@@ -19,4 +19,8 @@ public class LazyDataEmpty<T> implements LazyData<T> {
         return null;
     }
 
+    @Override
+    public boolean isLoading() {
+        return false;
+    }
 }
