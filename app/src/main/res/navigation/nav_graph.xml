@@ -7,11 +7,15 @@
     <fragment
         android:id="@+id/home"
         android:name="com.giacomoparisi.home.ui.HomeFragment"
-        android:label="HomeFragment" >
+        android:label="HomeFragment">
 
         <action
             android:id="@+id/action_home_to_detail"
-            app:destination="@id/detail">
+            app:destination="@id/detail"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
 
             <argument
                 android:name="url"
@@ -24,7 +28,7 @@
     <fragment
         android:id="@+id/detail"
         android:name="com.giacomoparisi.detail.ui.DetailFragment"
-        android:label="Detail" >
+        android:label="Detail">
 
         <argument
             android:name="url"
