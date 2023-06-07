@@ -1,14 +1,16 @@
 package com.giacomoparisi.detail.ui;
 
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -17,6 +19,7 @@ import com.giacomoparisi.detail.R;
 public class DetailFragment extends Fragment {
 
     private ImageView image;
+    private Toolbar toolbar;
 
     @Nullable
     @Override
@@ -31,8 +34,14 @@ public class DetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // find views
         image = view.findViewById(R.id.detail_image);
+        toolbar = view.findViewById(R.id.toolbar);
+
+        // setup
         setupImage();
+        setupToolbar();
     }
 
     private void setupImage() {
@@ -46,4 +55,8 @@ public class DetailFragment extends Fragment {
         }
     }
 
+    private void setupToolbar() {
+        toolbar.setNavigationIcon(com.giacomoparisi.core.R.drawable.back);
+        toolbar.setNavigationOnClickListener(v -> requireActivity().onBackPressed());
+    }
 }

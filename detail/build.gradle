@@ -35,10 +35,14 @@ dependencies {
     implementation(project(":core"))
 
     /* --- androidx --- */
+    implementation libs.androidx.appcompat
     implementation libs.androidx.viewmodel
     implementation libs.androidx.recyclerview
     implementation libs.androidx.cardview
     implementation libs.androidx.constraintlayout
+
+    /* --- theme --- */
+    implementation libs.google.material
 
     /* --- rx java --- */
     implementation libs.rxjava3.rxjava

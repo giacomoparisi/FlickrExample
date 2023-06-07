@@ -33,8 +33,12 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
 
-    /* --- androidx --- */
+    /* --- ui --- */
+    implementation libs.androidx.appcompat
     implementation libs.androidx.recyclerview
+
+    /* --- theme --- */
+    implementation libs.google.material
 
     /* --- hilt --- */
     implementation libs.hilt.android
