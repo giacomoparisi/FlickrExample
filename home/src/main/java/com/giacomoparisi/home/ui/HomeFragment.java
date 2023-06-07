@@ -50,7 +50,7 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
-        viewModel.dispatch(HomeAction.search("cat"));
+        viewModel.dispatch(HomeAction.search(""));
 
     }
 

@@ -36,4 +36,13 @@ public class PhotoRepositoryImpl implements PhotoRepository {
                 .map(photos -> new PagedList<>(photos, page, photos.size() < pageSize));
     }
 
+    @Override
+    public Single<PagedList<Photo>> getRecentPhotos(Integer page, Integer pageSize) {
+        return api.getRecentPhotos(
+                        application.getString(R.string.flicker_api_key),
+                        page,
+                        pageSize
+                ).map(PhotosResponse::toPhotoList)
+                .map(photos -> new PagedList<>(photos, page, photos.size() < pageSize));
+    }
 }

@@ -7,7 +7,9 @@ import com.giacomoparisi.domain.datatypes.lazydata.LazyDataError;
 import com.giacomoparisi.domain.datatypes.lazydata.LazyDataLoading;
 import com.giacomoparisi.domain.datatypes.lazydata.LazyDataSuccess;
 import com.giacomoparisi.domain.datatypes.paging.PagedList;
+import com.giacomoparisi.domain.usecases.photo.GetRecentPhotosUseCase;
 import com.giacomoparisi.domain.usecases.photo.SearchPhotosUseCase;
+import com.giacomoparisi.entities.photo.Photo;
 import com.giacomoparisi.home.data.actions.HomeAction;
 import com.giacomoparisi.home.data.actions.NextPhotosPageAction;
 import com.giacomoparisi.home.data.actions.SearchPhotosAction;
@@ -45,6 +47,7 @@ public class HomeViewModel extends ViewModel {
 
     /* --- use cases --- */
     private final SearchPhotosUseCase searchPhotosUseCase;
+    private final GetRecentPhotosUseCase getRecentPhotosUseCase;
 
     /* --- error --- */
     private final ErrorMapper errorMapper;
@@ -55,10 +58,12 @@ public class HomeViewModel extends ViewModel {
     @Inject
     public HomeViewModel(
             SearchPhotosUseCase searchPhotosUseCase,
+            GetRecentPhotosUseCase getRecentPhotosUseCase,
             ErrorMapper errorMapper,
             NavigationManager navigationManager
     ) {
         this.searchPhotosUseCase = searchPhotosUseCase;
+        this.getRecentPhotosUseCase = getRecentPhotosUseCase;
         this.errorMapper = errorMapper;
         this.navigationManager = navigationManager;
     }
@@ -142,20 +147,25 @@ public class HomeViewModel extends ViewModel {
     }
 
     private Single<PagedList<PhotoItem>> searchPhotos(String text, int page) {
-        return searchPhotosUseCase
-                .execute(text, page, pageSize)
-                .map(photos ->
-                        photos.map(photo ->
-                                new PhotoItem(
-                                        photo,
-                                        v -> {
-                                            String url = photo.getUrl();
-                                            navigationManager.navigate(
-                                                    NavigationDestination.detail(photo)
-                                            );
-                                        }
-                                ))
-                );
+
+        Single<PagedList<Photo>> request =
+                text.isEmpty() ?
+                        getRecentPhotosUseCase.execute(page, pageSize) :
+                        searchPhotosUseCase.execute(text, page, pageSize);
+
+
+        return request.map(photos ->
+                photos.map(photo ->
+                        new PhotoItem(
+                                photo,
+                                v -> {
+                                    String url = photo.getUrl();
+                                    navigationManager.navigate(
+                                            NavigationDestination.detail(photo)
+                                    );
+                                }
+                        ))
+        );
     }
 
     /* --- actions --- */

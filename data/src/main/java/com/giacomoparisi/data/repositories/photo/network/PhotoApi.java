@@ -16,4 +16,11 @@ public interface PhotoApi {
             @Query("per_page") Integer perPage
     );
 
+    @GET("rest/?method=flickr.photos.getRecent&format=json&nojsoncallback=1")
+    Single<PhotosResponse> getRecentPhotos(
+            @Query("api_key") String apiKey,
+            @Query("page") Integer page,
+            @Query("per_page") Integer perPage
+    );
+
 }
