@@ -12,9 +12,20 @@ public class PhotoResponse {
     @SerializedName("server")
     public String server;
 
+    @SerializedName("title")
+    public String title;
+
+    @SerializedName("ispublic")
+    public Integer isPublic;
+
+    @SerializedName("isfamily")
+    public Integer isFamily;
+
     public Photo toPhoto() {
 
-        if (id != null && secret != null && server != null)
+        if (id != null && secret != null && server != null && title != null &&
+                isFamily != null && isPublic != null
+        )
             return new Photo(
                     "https://live.staticflickr.com" +
                             "/" +
@@ -23,7 +34,10 @@ public class PhotoResponse {
                             id +
                             "_" +
                             secret +
-                            "_w.jpg"
+                            "_w.jpg",
+                    title,
+                    isPublic == 1,
+                    isFamily == 1
             );
         else return null;
 

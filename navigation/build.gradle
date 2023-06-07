@@ -30,6 +30,7 @@ android {
 dependencies {
 
     /* --- modules --- */
+    implementation(project(":entities"))
     implementation(project(":domain"))
 
     /* --- hilt --- */

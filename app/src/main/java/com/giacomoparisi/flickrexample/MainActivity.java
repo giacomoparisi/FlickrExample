@@ -47,12 +47,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void navigate(NavigationAction action) {
-        if (action instanceof DetailNavigationDestination)
-            Navigation.findNavController(this, R.id.nav_host_fragment)
-                    .navigate(
-                            R.id.action_home_to_detail,
-                            ((DetailNavigationDestination) action).getBundle()
-                    );
+        try {
+            if (action instanceof DetailNavigationDestination)
+                Navigation.findNavController(this, R.id.nav_host_fragment)
+                        .navigate(
+                                R.id.action_home_to_detail,
+                                ((DetailNavigationDestination) action).getBundle()
+                        );
+        } catch (Throwable ignored) {
+
+        }
     }
 
 }

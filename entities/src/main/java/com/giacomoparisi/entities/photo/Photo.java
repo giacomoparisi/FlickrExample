@@ -4,12 +4,39 @@ public class Photo {
 
     private final String url;
 
-    public Photo(String url) {
+    private final String title;
+
+    private final boolean isPublic;
+
+    private final boolean isFamily;
+
+
+    public Photo(
+            String url,
+            String title,
+            boolean isPublic,
+            boolean isFamily
+    ) {
         this.url = url;
+        this.title = title;
+        this.isPublic = isPublic;
+        this.isFamily = isFamily;
     }
 
     public String getUrl() {
         return url;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    public boolean isFamily() {
+        return isFamily;
     }
 
     @Override

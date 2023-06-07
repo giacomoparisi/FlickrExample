@@ -1,12 +1,11 @@
 package com.giacomoparisi.detail.ui;
 
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
@@ -19,6 +18,7 @@ import com.giacomoparisi.detail.R;
 public class DetailFragment extends Fragment {
 
     private ImageView image;
+    private TextView title;
     private Toolbar toolbar;
 
     @Nullable
@@ -38,10 +38,12 @@ public class DetailFragment extends Fragment {
         // find views
         image = view.findViewById(R.id.detail_image);
         toolbar = view.findViewById(R.id.toolbar);
+        title = view.findViewById(R.id.title);
 
         // setup
         setupImage();
         setupToolbar();
+        setupHeader();
     }
 
     private void setupImage() {
@@ -58,5 +60,13 @@ public class DetailFragment extends Fragment {
     private void setupToolbar() {
         toolbar.setNavigationIcon(com.giacomoparisi.core.R.drawable.back);
         toolbar.setNavigationOnClickListener(v -> requireActivity().onBackPressed());
+    }
+
+    private void setupHeader() {
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            String photoTitle = arguments.getString("title");
+            if (photoTitle != null) title.setText(photoTitle);
+        }
     }
 }

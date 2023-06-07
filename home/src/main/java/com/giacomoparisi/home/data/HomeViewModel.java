@@ -141,7 +141,7 @@ public class HomeViewModel extends ViewModel {
                                         v -> {
                                             String url = photo.getUrl();
                                             navigationManager.navigate(
-                                                    NavigationDestination.detail(url)
+                                                    NavigationDestination.detail(photo)
                                             );
                                         }
                                 ))
