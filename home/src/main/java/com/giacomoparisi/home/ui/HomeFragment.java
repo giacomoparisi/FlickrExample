@@ -1,11 +1,13 @@
 package com.giacomoparisi.home.ui;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -64,10 +66,16 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // find views
         recyclerView = view.findViewById(R.id.recycler_view);
         editText = view.findViewById(R.id.search);
-        setupRecyclerView();
 
+        // setup
+        setupRecyclerView();
+        setupSearch();
+
+        // bind state
         compositeDisposable.add(
                 viewModel.state
                         .subscribeOn(Schedulers.io())
@@ -98,6 +106,16 @@ public class HomeFragment extends Fragment {
     }
 
     private void setupSearch() {
+        editText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                viewModel.dispatch(HomeAction.search(editText.getEditableText().toString()));
+                InputMethodManager imm =
+                        getSystemService(requireContext(), InputMethodManager.class);
+                if (imm != null) imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                return true;
+            }
+            return false;
+        });
     }
 
     private void updateView(HomeState state) {
@@ -106,6 +124,7 @@ public class HomeFragment extends Fragment {
         if (photos != null && photos.getData() != null) {
             List<Item> items = new ArrayList<>(photos.getData());
             adapter.submitList(items);
+            // TODO: optimize list refresh
             adapter.notifyDataSetChanged();
         }
 
