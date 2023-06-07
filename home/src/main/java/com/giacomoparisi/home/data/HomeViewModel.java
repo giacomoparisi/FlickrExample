@@ -68,9 +68,12 @@ public class HomeViewModel extends ViewModel {
         if (firstPageDisposable != null) firstPageDisposable.dispose();
         if (nextPageDisposable != null) nextPageDisposable.dispose();
         firstPageDisposable =
-                searchPhotos(text, 0)
+                searchPhotos(text, 1)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
+                        .doOnTerminate(() -> {
+                            firstPageDisposable = null;
+                        })
                         .subscribe(
                                 photos -> {
                                     HomeState newState =
@@ -94,7 +97,7 @@ public class HomeViewModel extends ViewModel {
     private boolean needNextPage() {
         // Avoid to search a new page if a request is already running
         PagedList<PhotoItem> currentList = stateBehaviorSubject.getValue().getPhotos().value();
-        boolean isNextPageIdle = nextPageDisposable == null || !nextPageDisposable.isDisposed();
+        boolean isNextPageIdle = nextPageDisposable == null && firstPageDisposable == null;
         return isNextPageIdle && currentList != null && !currentList.getIsCompleted();
     }
 
@@ -104,9 +107,12 @@ public class HomeViewModel extends ViewModel {
 
         if (needNextPage()) {
             nextPageDisposable =
-                    searchPhotos(state().getText(), currentList.getPage() + 1)
+                    searchPhotos(state().getText(), (currentList.getPage() + 1))
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
+                            .doOnTerminate(() -> {
+                                nextPageDisposable = null;
+                            })
                             .subscribe(
                                     photos -> {
                                         HomeState newState =
@@ -160,6 +166,9 @@ public class HomeViewModel extends ViewModel {
     @Override
     protected void onCleared() {
         if (firstPageDisposable != null) firstPageDisposable.dispose();
+        if(nextPageDisposable != null) nextPageDisposable.dispose();
+        firstPageDisposable = null;
+        nextPageDisposable = null;
         super.onCleared();
     }
 }

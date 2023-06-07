@@ -32,13 +32,13 @@ import java.util.List;
 import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 @AndroidEntryPoint
 public class HomeFragment extends Fragment {
 
-    private final CompositeDisposable compositeDisposable =
-            new CompositeDisposable();
+    private Disposable stateDisposable;
     private HomeViewModel viewModel;
     private RecyclerView recyclerView;
     private EditText editText;
@@ -76,18 +76,18 @@ public class HomeFragment extends Fragment {
         setupSearch();
 
         // bind state
-        compositeDisposable.add(
+        stateDisposable =
                 viewModel.state
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(this::updateView)
-        );
+                        .subscribe(this::updateView);
 
     }
 
     @Override
     public void onDestroyView() {
-        compositeDisposable.dispose();
+        stateDisposable.dispose();
+        stateDisposable = null;
         super.onDestroyView();
     }
 
