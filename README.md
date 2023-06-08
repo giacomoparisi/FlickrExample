@@ -37,7 +37,6 @@ com.giacomoparisi.flickrexample
 |   
 │
 │
-├── 📂 buildSrc/                     # Dependency versions, and projects settings organization
 │
 ├── 📂 core/                         # Contains all possible shared UI and utilities for all 
 |                                      presentation modules
